@@ -4,7 +4,7 @@ This repository provides the code of the paper *"Quantization-aware Deep Optics 
 
 ## Environment
 
-Firstly, use Anaconda to create a virtual Python 3.8 environment with necessary dependencies from the **environment.yaml** file in the code.
+Firstly, create a virtual Python 3.8 environment in Anaconda with the necessary dependencies from the **environment.yaml** file provided in the code.
 
 ```
 conda env create -f ./environment.yaml
@@ -62,41 +62,41 @@ This example shows a 4-level QDO+A model using SK1300 as the DOE material. Its s
 
  ```--alpha_blending``` argument (optional) indicates whether to use alpha-blending for quantization-aware training. If this option is not given, the model will use STE.
 
- ```--adaptive_quantization``` argument (optional) defines whether to use adaptive quantization (for QDO+A model) or not (for QDO model).
+ ```--adaptive_quantization``` argument (optional) defines whether to use adaptive quantization (for the QDO+A model) or not (for the QDO model).
 
- ```--sensor_distance_mm``` argument defines the distance between the DOE to the sensor plane in millimeter.
+ ```--sensor_distance_mm``` argument defines the distance between the DOE to the sensor plane in millimeters.
 
- ```--scene_depth_m``` argument defines the distance between the scene to the DOE in meter.
+ ```--scene_depth_m``` argument defines the distance between the scene to the DOE in meters.
 
  ```--tag``` argument is a label that makes it easier to manage checkpoints and log files.
 
 When the training starts, the trainer will save checkpoints and current task arguments into **./checkpoint/** as 2 JSON files named **controlled_model_args.json** and **controlled_training_args.json**. These files are important for the trainer to continue training and necessary for the evaluator to test the model. Visualization summary results, including DOE height maps, PSFs, and encoded images, will also be saved to the *./logs/* directory. Tensorboard can be used for viewing these results.
 
-The checkpoint of a QDO+A 4-level model trained on ICVL is provided [here](https://mega.nz/file/FkNkWBpA#H3PXA0DIuDVl3G2xcTeVPp5Yx6lc7A03tyoqNaRGL8k). You can put extracted files into **./checkpoint/<TAG_NAME>** for later test. The **<TAG_NAME>** can be any value you want as the directory name.
+The checkpoint of a QDO+A 4-level model trained on ICVL is provided [here](https://mega.nz/file/FkNkWBpA#H3PXA0DIuDVl3G2xcTeVPp5Yx6lc7A03tyoqNaRGL8k). You can put extracted files into **./checkpoint/<TAG_NAME>** for later testing. The **<TAG_NAME>** can be any value you want as the directory name.
 
 ## Test
 
 After training, evaluation can be performed using the following commands:
 ```bash
-# For AQDO/QDO model, using the test set
+# For QDO+A/QDO model, using the test set
 python evaluator.py --checkpoint_dir CHEKPOINT_DIR  \
                     --tag_name TAG_NAME \
                     --tag_vars TAG_VARS
                     
-# For conventional DO model, using the test set
+# For the conventional DO model, using the test set
 python evaluator.py --checkpoint_dir CHEKPOINT_DIR \
                     --tag_name TAG_NAME \
                     --tag_vars TAG_VARS \
                     --test_q TEST_QUANTIZATION_LEVEL
                     
-# For AQDO/QDO model, using the real RGB data
+# For QDO+A/QDO model, using the real RGB data
 python evaluator.py --checkpoint_dir CHEKPOINT_DIR \
                     --tag_name TAG_NAME \
                     --tag_vars TAG_VARS \
                     --real_data_dir REAL_DATA_DIR
 ```
 
-```--checkpoint_dir``` argument is the name of the sub directory in **./checkpoint/**.
+```--checkpoint_dir``` argument is the name of the subdirectory in **./checkpoint/**.
 
 ```--tag_name``` argument is the inner tag name indicating the sub-directory in ```-checkpoint_dir``` given above.
 
@@ -107,3 +107,17 @@ python evaluator.py --checkpoint_dir CHEKPOINT_DIR \
 ```--real_data_dir``` argument (optional) is the path to the directory storing real captured RGB images (PNG files).
 
 The evaluator will output test results into **./eval-res/**, including .csv files with test metrics, visualized RGB images, and corresponding hyperspectral .mat files.
+
+
+# Citation
+
+😊 Please consider citing our paper if you find this repository helpful in your research.
+```
+@inproceedings{li2022quantization,
+  title={Quantization-Aware Deep Optics for Diffractive Snapshot Hyperspectral Imaging},
+  author={Li, Lingen and Wang, Lizhi and Song, Weitao and Zhang, Lei and Xiong, Zhiwei and Huang, Hua},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={19780--19789},
+  year={2022}
+}
+```
